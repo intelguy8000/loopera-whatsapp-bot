@@ -88,13 +88,8 @@ async def verify_webhook(request: Request):
 @app.post("/webhook")
 @app.post("/webhook/whatsapp")
 async def receive_webhook(request: Request, background_tasks: BackgroundTasks):
-    """
-    Recibir mensajes de WhatsApp
-
-    IMPORTANTE: Responde 200 OK inmediatamente y procesa en background
-    """
-    # Log inmediato para confirmar que el POST llegó
-    logger.info("📥 POST /webhook recibido")
+    # PRIMER LOG - antes de todo
+    logger.info("🚨🚨🚨 POST RECIBIDO EN WEBHOOK 🚨🚨🚨")
 
     try:
         body = await request.json()
