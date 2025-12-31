@@ -22,14 +22,23 @@ async def lifespan(app: FastAPI):
     """Gestión del ciclo de vida de la aplicación"""
     # Startup
     logger.info("🚀 Iniciando Loopera WhatsApp Bot...")
-    await session_manager.connect()
-    logger.info("✅ Conectado a Redis")
-    
+
+    # Conexión a Redis no bloqueante
+    try:
+        await session_manager.connect()
+        logger.info("✅ Conectado a Redis")
+    except Exception as e:
+        logger.warning(f"⚠️ No se pudo conectar a Redis: {e}")
+        logger.warning("El bot funcionará sin persistencia de sesiones")
+
     yield
-    
+
     # Shutdown
     logger.info("👋 Cerrando conexiones...")
-    await session_manager.disconnect()
+    try:
+        await session_manager.disconnect()
+    except Exception:
+        pass
 
 
 app = FastAPI(
