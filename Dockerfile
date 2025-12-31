@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar código
 COPY . .
 
-CMD ["python", "-m", "app.main"]
+CMD ["sh", "-c", "uvicorn app.main:app --host '::' --port ${PORT:-8080}"]
