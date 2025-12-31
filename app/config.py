@@ -8,7 +8,7 @@ from functools import lru_cache
 class Settings(BaseSettings):
     # WhatsApp Cloud API
     whatsapp_token: str = ""
-    whatsapp_phone_id: str = ""
+    whatsapp_phone_number_id: str = ""  # Meta usa WHATSAPP_PHONE_NUMBER_ID
     webhook_verify_token: str = "loopera-verify-token-2024"
     
     # Groq API (Whisper + LLM)

@@ -90,22 +90,27 @@ async def verify_webhook(request: Request):
 async def receive_webhook(request: Request, background_tasks: BackgroundTasks):
     """
     Recibir mensajes de WhatsApp
-    
+
     IMPORTANTE: Responde 200 OK inmediatamente y procesa en background
     """
+    # Log inmediato para confirmar que el POST llegó
+    logger.info("📥 POST /webhook recibido")
+
     try:
         body = await request.json()
-        
+        logger.info(f"📦 Body recibido: {str(body)[:500]}")
+
         # Extraer información del mensaje
         entry = body.get("entry", [{}])[0]
         changes = entry.get("changes", [{}])[0]
         value = changes.get("value", {})
-        
+
         # Verificar si hay mensajes
         messages = value.get("messages", [])
-        
+
         if not messages:
             # Puede ser una actualización de estado, ignorar
+            logger.info("ℹ️ Webhook sin mensajes (posible status update)")
             return {"status": "ok"}
         
         message = messages[0]
