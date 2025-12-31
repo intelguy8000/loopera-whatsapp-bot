@@ -66,25 +66,27 @@ async def health_check():
 
 
 @app.get("/webhook")
+@app.get("/webhook/whatsapp")
 async def verify_webhook(request: Request):
     """
     Verificación del webhook de WhatsApp (requerido por Meta)
     """
     settings = get_settings()
-    
+
     mode = request.query_params.get("hub.mode")
     token = request.query_params.get("hub.verify_token")
     challenge = request.query_params.get("hub.challenge")
-    
+
     if mode == "subscribe" and token == settings.webhook_verify_token:
         logger.info("✅ Webhook verificado exitosamente")
         return PlainTextResponse(content=challenge)
-    
+
     logger.warning("❌ Verificación de webhook fallida")
     raise HTTPException(status_code=403, detail="Verification failed")
 
 
 @app.post("/webhook")
+@app.post("/webhook/whatsapp")
 async def receive_webhook(request: Request, background_tasks: BackgroundTasks):
     """
     Recibir mensajes de WhatsApp
