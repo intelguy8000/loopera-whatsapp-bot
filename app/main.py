@@ -237,3 +237,11 @@ async def extract_message_content(message: dict, message_type: str) -> str:
     
     else:
         return None
+
+
+if __name__ == "__main__":
+    import os
+    import uvicorn
+    port = int(os.environ.get("PORT", 8080))
+    print(f"🔍 Starting on port {port}")
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port, log_level="info")
