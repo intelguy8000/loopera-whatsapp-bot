@@ -16,13 +16,13 @@ class WhatsAppService:
     def __init__(self):
         self.settings = get_settings()
         # Log de verificación de config
-        token = self.settings.whatsapp_token
-        phone_id = self.settings.whatsapp_phone_number_id
-        logger.info(f"📱 WhatsApp Config - Token: {token[:20]}... | Phone ID: {phone_id}")
+        token = self.settings.whatsapp_token or "(vacío)"
+        phone_id = self.settings.phone_id or "(vacío)"
+        logger.info(f"📱 WhatsApp Config - Token: {token[:20] if len(token) > 20 else token}... | Phone ID: {phone_id}")
 
     async def send_text_message(self, to: str, text: str) -> dict:
         """Enviar mensaje de texto"""
-        url = f"{self.BASE_URL}/{self.settings.whatsapp_phone_number_id}/messages"
+        url = f"{self.BASE_URL}/{self.settings.phone_id}/messages"
 
         headers = {
             "Authorization": f"Bearer {self.settings.whatsapp_token}",
@@ -55,7 +55,7 @@ class WhatsAppService:
     
     async def send_typing_indicator(self, to: str):
         """Enviar indicador de 'escribiendo...'"""
-        url = f"{self.BASE_URL}/{self.settings.whatsapp_phone_number_id}/messages"
+        url = f"{self.BASE_URL}/{self.settings.phone_id}/messages"
         
         headers = {
             "Authorization": f"Bearer {self.settings.whatsapp_token}",
@@ -103,7 +103,7 @@ class WhatsAppService:
     
     async def mark_as_read(self, message_id: str):
         """Marcar mensaje como leído"""
-        url = f"{self.BASE_URL}/{self.settings.whatsapp_phone_number_id}/messages"
+        url = f"{self.BASE_URL}/{self.settings.phone_id}/messages"
         
         headers = {
             "Authorization": f"Bearer {self.settings.whatsapp_token}",
