@@ -1,79 +1,86 @@
-# 🤖 Loopera WhatsApp Bot
+# Loopera WhatsApp Bot
 
 Bot de WhatsApp AI para Loopera - Desarrollo de Agentes AI para empresas.
 
-## 🚀 Características
+## Características
 
-- ✅ Recibe y responde mensajes de texto
-- ✅ Procesa notas de voz (transcripción con Whisper)
-- ✅ Mantiene contexto de conversación (Redis)
-- ✅ LLM inteligente para respuestas naturales (Groq)
-- ✅ Específico para el negocio (cumple políticas Meta 2026)
+- Recibe y responde mensajes de texto
+- Procesa notas de voz (transcripcion con Whisper)
+- Mantiene contexto de conversacion (Redis)
+- LLM inteligente para respuestas naturales (Groq)
+- Especifico para el negocio (cumple politicas Meta 2026)
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnologico
 
 - **Framework**: FastAPI
 - **LLM**: Groq (Llama 3.3 70B)
-- **Transcripción**: Groq Whisper Large V3 Turbo
+- **Transcripcion**: Groq Whisper Large V3 Turbo
 - **Sesiones**: Redis
-- **Hosting**: Railway
-- **Audio**: ffmpeg
+- **Hosting**: Render / Railway (Nixpacks)
 
-## 📋 Requisitos
+## Requisitos
 
 - Python 3.11+
 - Cuenta de WhatsApp Business API (WABA)
 - API Key de Groq
-- Redis (incluido en Railway)
+- Redis
 
-## 🔧 Variables de Entorno
+## Variables de Entorno
 
 ```env
 # WhatsApp Cloud API
 WHATSAPP_TOKEN=tu_token
-WHATSAPP_PHONE_ID=tu_phone_id
-WEBHOOK_VERIFY_TOKEN=tu_token_verificacion
+WHATSAPP_PHONE_ID=949507764911133
+WEBHOOK_VERIFY_TOKEN=loopera-verify-token-2024
 
 # Groq
-GROQ_API_KEY=tu_api_key
+GROQ_API_KEY=gsk_xxx
 
-# Redis (Railway lo provee)
+# Redis
 REDIS_URL=redis://...
 ```
 
-## 🚀 Deploy en Railway
+## Deploy en Render/Railway
 
-1. Fork este repositorio
-2. Conecta tu repo en Railway
-3. Agrega las variables de entorno
-4. Railway detectará el Dockerfile automáticamente
+1. Conecta el repo de GitHub
+2. Agrega las variables de entorno
+3. El servicio detecta automaticamente FastAPI (Nixpacks)
+4. Configura el webhook en Meta: `https://tu-app.onrender.com/webhook`
 
-## 📁 Estructura
+## Estructura
 
 ```
 loopera-whatsapp-bot/
 ├── app/
 │   ├── __init__.py
-│   ├── main.py          # FastAPI + Webhook
-│   ├── config.py        # Configuración
+│   ├── main.py              # FastAPI + Webhook
+│   ├── config.py            # Configuracion
 │   └── services/
 │       ├── __init__.py
-│       ├── redis_service.py    # Sesiones
-│       ├── whatsapp_service.py # WhatsApp API
-│       └── groq_service.py     # LLM + Whisper
-├── Dockerfile
+│       ├── redis_service.py     # Sesiones
+│       ├── whatsapp_service.py  # WhatsApp API
+│       └── groq_service.py      # LLM + Whisper
+├── Procfile                 # Comando de inicio
 ├── requirements.txt
-├── railway.json
 └── README.md
 ```
 
-## 🔒 Seguridad
+## Endpoints
+
+| Metodo | Ruta | Descripcion |
+|--------|------|-------------|
+| GET | `/` | Health check |
+| GET | `/health` | Health check |
+| GET | `/webhook` | Verificacion Meta |
+| POST | `/webhook` | Recibir mensajes |
+
+## Seguridad
 
 - Las API keys NUNCA se suben al repositorio
-- El webhook valida firma de Meta
+- El webhook valida token de Meta
 - Sesiones expiran en 24 horas
 - Bot restringido al dominio del negocio
 
-## 📄 Licencia
+## Licencia
 
-Privado - Loopera © 2024
+Privado - Loopera 2024
